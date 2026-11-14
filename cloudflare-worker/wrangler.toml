@@ -1,0 +1,11 @@
+name = "smartbackup-scheduler-worker"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+[vars]
+# Remplacer par l'URL réelle de votre backend Render
+BACKEND_URL = "https://your-smartbackup.onrender.com"
+# SCHEDULER_SECRET est à configurer comme secret chiffré via wrangler secret put SCHEDULER_SECRET

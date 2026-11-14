@@ -1,0 +1,98 @@
+# ============================================================
+# CD — Déploiement Production
+# Déclenché UNIQUEMENT sur push vers main (après merge PR validée)
+# Nécessite que CI backend ET CI frontend soient verts.
+# ============================================================
+name: CD Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # ── Vérification préalable : tests backend ───────────────
+  test-backend:
+    name: Verify Backend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Run backend tests
+        run: mvn -B test --no-transfer-progress
+        working-directory: backend
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          JWT_SECRET: test-secret-key-minimum-32-characters-long
+
+  # ── Vérification préalable : build frontend ──────────────
+  build-frontend:
+    name: Verify Frontend Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --frozen-lockfile
+        working-directory: frontend
+      - name: Build frontend
+        run: npm run build
+        working-directory: frontend
+        env:
+          VITE_API_BASE_URL: ${{ secrets.RENDER_BACKEND_URL }}
+          VITE_APP_NAME: SmartBackup
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist-prod
+          path: frontend/dist/
+          retention-days: 1
+
+  # ── Déploiement Backend sur Render ───────────────────────
+  deploy-backend:
+    name: Deploy Backend → Render
+    needs: [test-backend, build-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy Hook
+        # Render fournit un Deploy Hook URL dans les paramètres du service
+        # Stockez-le dans RENDER_DEPLOY_HOOK_URL dans GitHub Secrets
+        run: |
+          curl -sS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          echo "Déploiement Render déclenché."
+
+  # ── Déploiement Frontend sur Vercel ──────────────────────
+  deploy-frontend:
+    name: Deploy Frontend → Vercel
+    needs: [test-backend, build-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Install frontend dependencies
+        run: npm ci --frozen-lockfile
+        working-directory: frontend
+
+      - name: Deploy to Vercel (Production)
+        run: |
+          vercel --prod --yes \
+            --token "${{ secrets.VERCEL_TOKEN }}" \
+            --env VITE_API_BASE_URL="${{ secrets.RENDER_BACKEND_URL }}" \
+            --env VITE_APP_NAME="SmartBackup"
+        working-directory: frontend
+        env:
+          VERCEL_ORG_ID:     ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

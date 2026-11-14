@@ -1,0 +1,22 @@
+# Prometheus configuration — SmartBackup
+# Scrape every 15s from the Spring Boot Actuator endpoint
+
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  external_labels:
+    project: 'smartbackup'
+
+scrape_configs:
+  # Backend Spring Boot (Actuator /actuator/metrics via Micrometer)
+  - job_name: 'smartbackup-backend'
+    metrics_path: '/actuator/metrics'
+    static_configs:
+      - targets: ['backend:8080']
+    # Note: Pour Prometheus /actuator/prometheus, ajouter micrometer-registry-prometheus au pom.xml
+    # et changer metrics_path: '/actuator/prometheus'
+
+  # Prometheus lui-même
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

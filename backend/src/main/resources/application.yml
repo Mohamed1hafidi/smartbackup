@@ -1,0 +1,92 @@
+spring:
+  application:
+    name: smartbackup
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/smartbackup}
+    username: ${SPRING_DATASOURCE_USERNAME:smartbackup}
+    password: ${SPRING_DATASOURCE_PASSWORD:smartbackup}
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: 2
+      connection-timeout: 30000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  servlet:
+    multipart:
+      max-file-size: ${APP_MAX_FILE_SIZE_MB:50}MB
+      max-request-size: ${APP_MAX_FILE_SIZE_MB:50}MB
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: UTC
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  error:
+    include-message: never
+    include-stacktrace: never
+
+jwt:
+  secret: ${JWT_SECRET:dev-only-secret-change-me-please-minimum-32-characters}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+
+app:
+  frontend:
+    url: ${APP_FRONTEND_URL:http://localhost:5173}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  files:
+    max-size-mb: ${APP_MAX_FILE_SIZE_MB:50}
+    max-per-user: ${APP_MAX_FILES_PER_USER:100}
+    allowed-mime-types: ${APP_ALLOWED_MIME_TYPES:image/jpeg,image/png,image/gif,image/webp,application/pdf,text/plain,application/zip,application/x-zip-compressed,application/json}
+  scheduler:
+    enabled: ${APP_SCHEDULER_ENABLED:true}
+    interval-ms: ${APP_SCHEDULER_INTERVAL_MS:60000}
+    initial-delay-ms: ${APP_SCHEDULER_INITIAL_DELAY_MS:30000}
+    secret: ${SCHEDULER_SECRET:}
+  notifications:
+    email-enabled: ${APP_EMAIL_NOTIFICATIONS_ENABLED:false}
+    from: ${APP_NOTIFICATION_FROM_EMAIL:no-reply@smartbackup.local}
+    max-emails-per-user-per-day: ${APP_NOTIFICATION_MAX_EMAILS_PER_DAY:5}
+  storage:
+    endpoint: ${R2_ENDPOINT:}
+    public-endpoint: ${R2_PUBLIC_ENDPOINT:}
+    bucket: ${R2_BUCKET_NAME:smartbackup-files}
+    region: ${R2_REGION:auto}
+    access-key: ${R2_ACCESS_KEY_ID:}
+    secret-key: ${R2_SECRET_ACCESS_KEY:}
+    path-style-access: ${R2_PATH_STYLE_ACCESS:false}
+    presigned-url-expiry-seconds: ${R2_PRESIGNED_URL_EXPIRY_SECONDS:900}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+    com.smartbackup: ${LOG_LEVEL:INFO}

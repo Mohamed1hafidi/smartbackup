@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:smartbackup;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: com.smartbackup.config.H2TestDialect
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: false
+
+jwt:
+  secret: test-only-secret-key-with-at-least-32-characters
+  expiration-ms: 86400000
+  refresh-expiration-ms: 604800000
+
+app:
+  scheduler:
+    enabled: false
+  frontend:
+    url: http://localhost:5173
+  cors:
+    allowed-origins: http://localhost:5173
+  storage:
+    endpoint: http://localhost:9000
+    public-endpoint: http://localhost:9000
+    bucket: test-bucket
+    region: us-east-1
+    access-key: test-access-key
+    secret-key: test-secret-key
+    path-style-access: true
+    presigned-url-expiry-seconds: 900
+
+logging:
+  level:
+    root: WARN

@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/smartbackup}
+    username: ${SPRING_DATASOURCE_USERNAME:smartbackup}
+    password: ${SPRING_DATASOURCE_PASSWORD:smartbackup}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+app:
+  storage:
+    endpoint: ${R2_ENDPOINT:http://localhost:9000}
+    public-endpoint: ${R2_PUBLIC_ENDPOINT:http://localhost:9000}
+    access-key: ${R2_ACCESS_KEY_ID:minioadmin}
+    secret-key: ${R2_SECRET_ACCESS_KEY:minioadmin}
+    region: ${R2_REGION:us-east-1}
+    path-style-access: ${R2_PATH_STYLE_ACCESS:true}
+
+logging:
+  level:
+    com.smartbackup: DEBUG
+    org.springframework.security: INFO
