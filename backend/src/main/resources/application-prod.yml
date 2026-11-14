@@ -48,7 +48,7 @@ app:
     region: ${R2_REGION:auto}
     access-key: ${R2_ACCESS_KEY_ID}
     secret-key: ${R2_SECRET_ACCESS_KEY}
-    path-style-access: "false"
+    path-style-access: ${R2_PATH_STYLE_ACCESS:true}
     presigned-url-expiry-seconds: ${R2_PRESIGNED_URL_EXPIRY_SECONDS:900}
 
 server:
