@@ -14,6 +14,8 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { APP_NAME } from '../api/config'
+import { BrandLogo } from '../components/brand/BrandLogo'
+import { ThemeToggle } from '../components/layout/ThemeToggle'
 import { useAuthStore } from '../store/authStore'
 
 const FEATURES = [
@@ -61,15 +63,10 @@ export function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" className="flex items-center gap-2.5 transition-transform duration-200 hover:scale-[1.03]">
-            <img
-              src="/smartbackup-logo-light.png"
-              alt={APP_NAME}
-              className="h-12 w-auto max-h-12 object-contain filter drop-shadow-sm"
-            />
-          </Link>
+        <div className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
+          <BrandLogo size="lg" tagline />
           <nav className="flex items-center gap-2">
+            <ThemeToggle />
             {accessToken ? (
               <Link
                 to="/dashboard"
@@ -104,6 +101,19 @@ export function HomePage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.12),transparent_50%),radial-gradient(circle_at_bottom_left,rgba(6,182,212,0.10),transparent_45%)]" />
           <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-24">
             <div>
+              <div className="mb-6 flex items-center">
+                <img
+                  src="/smartbackup-logo.png"
+                  alt="SmartBackup Logo complet"
+                  className="hidden dark:block h-32 sm:h-40 md:h-48 w-auto max-w-full object-contain drop-shadow-[0_14px_32px_rgba(37,99,235,0.4)] transition-transform duration-300 hover:scale-[1.02]"
+                />
+                <img
+                  src="/smartbackup-logo-light.png"
+                  alt="SmartBackup Logo complet"
+                  className="block dark:hidden h-32 sm:h-40 md:h-48 w-auto max-w-full object-contain drop-shadow-[0_12px_28px_rgba(37,99,235,0.2)] transition-transform duration-300 hover:scale-[1.02]"
+                />
+              </div>
+
               <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1 text-xs font-semibold text-brand-700">
                 <Sparkles className="h-3.5 w-3.5" />
                 Stockage cloud sécurisé
