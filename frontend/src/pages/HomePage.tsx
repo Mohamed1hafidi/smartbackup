@@ -62,11 +62,12 @@ export function HomePage() {
     <div className="min-h-screen bg-slate-50">
       <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
-              <Cloud className="h-5 w-5" />
-            </span>
-            <span className="text-base font-bold tracking-tight text-slate-900">{APP_NAME}</span>
+          <Link to="/" className="flex items-center gap-2.5 transition-transform duration-200 hover:scale-[1.03]">
+            <img
+              src="/smartbackup-logo-light.png"
+              alt={APP_NAME}
+              className="h-12 w-auto max-h-12 object-contain filter drop-shadow-sm"
+            />
           </Link>
           <nav className="flex items-center gap-2">
             {accessToken ? (

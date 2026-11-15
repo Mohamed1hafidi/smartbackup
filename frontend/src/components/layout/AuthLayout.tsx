@@ -1,4 +1,4 @@
-import { Cloud, ShieldCheck, Sparkles, TimerReset } from 'lucide-react'
+import { ShieldCheck, Sparkles, TimerReset } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
 import { APP_NAME } from '../../api/config'
 
@@ -8,11 +8,12 @@ export function AuthLayout() {
       <div className="relative hidden w-1/2 overflow-hidden bg-slate-950 lg:flex">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.45),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(6,182,212,0.35),transparent_45%)]" />
         <div className="relative z-10 flex w-full flex-col justify-between p-12">
-          <Link to="/" className="flex items-center gap-3 text-white">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20">
-              <Cloud className="h-6 w-6" />
-            </span>
-            <span className="text-lg font-bold tracking-tight">{APP_NAME}</span>
+          <Link to="/" className="flex items-center gap-3 transition-transform duration-200 hover:scale-[1.03]">
+            <img
+              src="/smartbackup-logo.png"
+              alt={APP_NAME}
+              className="h-14 w-auto object-contain filter drop-shadow-md"
+            />
           </Link>
 
           <div className="max-w-md">
@@ -44,12 +45,13 @@ export function AuthLayout() {
         <div className="w-full max-w-md">
           <Link
             to="/"
-            className="mb-8 flex items-center justify-center gap-2 text-slate-900 lg:hidden"
+            className="mb-8 flex items-center justify-center transition-transform duration-200 hover:scale-105 lg:hidden"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-white">
-              <Cloud className="h-5 w-5" />
-            </span>
-            <span className="text-lg font-bold">{APP_NAME}</span>
+            <img
+              src="/smartbackup-logo-light.png"
+              alt={APP_NAME}
+              className="h-14 w-auto object-contain filter drop-shadow-sm"
+            />
           </Link>
           <Outlet />
         </div>
