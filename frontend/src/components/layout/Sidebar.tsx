@@ -38,23 +38,23 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       />
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform duration-200 lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-800/80 bg-[#0D1A33] text-white transition-transform duration-300 ease-in-out lg:translate-x-0 shadow-xl shadow-black/20',
           open ? 'translate-x-0' : '-translate-x-full',
         )}
       >
-        <div className="flex h-16 items-center gap-2.5 border-b border-slate-100 px-5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm">
+        <div className="flex h-16 items-center gap-3 border-b border-white/[0.08] px-5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-brand-600 to-blue-500 text-white shadow-lg shadow-brand-500/25 transition-transform duration-200 hover:scale-105">
             <Cloud className="h-5 w-5" />
           </span>
           <div>
-            <p className="text-sm font-bold tracking-tight text-slate-900">{APP_NAME}</p>
-            <p className="text-[10px] font-medium uppercase tracking-widest text-slate-400">
+            <p className="text-sm font-bold tracking-tight text-white">{APP_NAME}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-brand-300/80">
               Cloud backup
             </p>
           </div>
         </div>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+        <nav className="flex-1 space-y-1.5 overflow-y-auto p-3">
           {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -62,27 +62,42 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               onClick={onClose}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition',
+                  'group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200 ease-out active:scale-[0.98]',
                   isActive
-                    ? 'bg-brand-50 text-brand-700'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
+                    ? 'bg-gradient-to-r from-brand-600 to-blue-600 text-white font-semibold shadow-lg shadow-brand-900/40 translate-x-1'
+                    : 'text-slate-300 hover:bg-white/[0.07] hover:text-white hover:translate-x-1',
                 )
               }
             >
-              <Icon className="h-4 w-4" />
-              {label}
+              {({ isActive }) => (
+                <>
+                  <Icon
+                    className={cn(
+                      'h-4 w-4 transition-all duration-200 group-hover:scale-110',
+                      isActive ? 'text-white scale-105' : 'text-slate-400 group-hover:text-brand-300',
+                    )}
+                  />
+                  <span>{label}</span>
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        <div className="border-t border-slate-100 p-4">
-          <div className="rounded-xl bg-slate-50 p-3">
-            <p className="text-xs font-semibold text-slate-700">Stockage sécurisé</p>
-            <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
+        <div className="border-t border-white/[0.08] p-4">
+          <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-3 backdrop-blur-sm shadow-inner transition-colors duration-200 hover:bg-white/[0.06]">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </span>
+              <p className="text-xs font-semibold text-slate-200">Stockage sécurisé</p>
+            </div>
+            <p className="mt-1.5 text-[11px] leading-relaxed text-slate-400">
               Vos fichiers sont protégés et versionnés dans le cloud.
             </p>
           </div>
-          <p className="mt-3 text-[10px] text-slate-400">Version {APP_VERSION}</p>
+          <p className="mt-3 text-[10px] font-medium tracking-wider text-slate-500">Version {APP_VERSION}</p>
         </div>
       </aside>
     </>
