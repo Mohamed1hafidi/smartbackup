@@ -1,6 +1,5 @@
 import {
   CalendarClock,
-  Cloud,
   FolderOpen,
   History,
   LayoutDashboard,
@@ -42,16 +41,12 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           open ? 'translate-x-0' : '-translate-x-full',
         )}
       >
-        <div className="flex h-16 items-center gap-3 border-b border-white/[0.08] px-5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-brand-600 to-blue-500 text-white shadow-lg shadow-brand-500/25 transition-transform duration-200 hover:scale-105">
-            <Cloud className="h-5 w-5" />
-          </span>
-          <div>
-            <p className="text-sm font-bold tracking-tight text-white">{APP_NAME}</p>
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-brand-300/80">
-              Cloud backup
-            </p>
-          </div>
+        <div className="flex h-20 items-center justify-center border-b border-white/[0.08] px-4 py-2">
+          <img
+            src="/smartbackup-logo.png"
+            alt={APP_NAME}
+            className="h-16 w-auto max-w-[220px] object-contain filter drop-shadow-md transition-transform duration-200 hover:scale-[1.03]"
+          />
         </div>
 
         <nav className="flex-1 space-y-1.5 overflow-y-auto p-3">
